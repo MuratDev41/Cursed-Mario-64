@@ -945,7 +945,7 @@ void SM64AP_GenericInit() {
     AP_RegisterSlotDataIntCallback("MoveRandoVecHigh", &SM64AP_SetMoveRandoVecHigh);
     AP_RegisterSlotDataIntCallback("PaintingRando", &SM64AP_SetPaintingRando);
     AP_RegisterSlotDataMapIntIntCallback("AreaRando", &SM64AP_SetCourseMap);
-    AP_RegisterSlotDataIntCallback("colors_as_items", &SM64AP_SetColorsAsItems);
+    AP_RegisterSlotDataIntCallback("colours_as_items", &SM64AP_SetColorsAsItems);
     AP_RegisterSlotDataIntCallback("MarioPaletteSeed", &SM64AP_SetMarioPaletteSeed);
 
     course_dest_supported = { LEVEL_BOB,     LEVEL_WF,    LEVEL_JRB,   LEVEL_CCM,      LEVEL_BBH,
