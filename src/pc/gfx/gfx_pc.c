@@ -27,6 +27,7 @@
 #include "../platform.h"
 #include "../configfile.h"
 #include "../fs/fs.h"
+#include "src/sm64ap.h"
 
 #define SUPPORT_CHECK(x) assert(x)
 
@@ -799,6 +800,13 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
             d->color.r = r > 255 ? 255 : r;
             d->color.g = g > 255 ? 255 : g;
             d->color.b = b > 255 ? 255 : b;
+
+            if (gColorSaturation < 1.0f) {
+                uint8_t gray = (uint8_t)(0.299f * d->color.r + 0.587f * d->color.g + 0.114f * d->color.b);
+                d->color.r = (uint8_t)(gray + (d->color.r - gray) * gColorSaturation);
+                d->color.g = (uint8_t)(gray + (d->color.g - gray) * gColorSaturation);
+                d->color.b = (uint8_t)(gray + (d->color.b - gray) * gColorSaturation);
+            }
             
             if (rsp.geometry_mode & G_TEXTURE_GEN) {
                 float dotx = 0, doty = 0;
@@ -816,6 +824,13 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
             d->color.r = v->cn[0];
             d->color.g = v->cn[1];
             d->color.b = v->cn[2];
+
+            if (gColorSaturation < 1.0f) {
+                uint8_t gray = (uint8_t)(0.299f * d->color.r + 0.587f * d->color.g + 0.114f * d->color.b);
+                d->color.r = (uint8_t)(gray + (d->color.r - gray) * gColorSaturation);
+                d->color.g = (uint8_t)(gray + (d->color.g - gray) * gColorSaturation);
+                d->color.b = (uint8_t)(gray + (d->color.b - gray) * gColorSaturation);
+            }
         }
         
         d->u = U;

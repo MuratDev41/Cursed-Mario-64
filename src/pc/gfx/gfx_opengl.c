@@ -39,6 +39,7 @@
 #include "../configfile.h"
 #include "gfx_cc.h"
 #include "gfx_rendering_api.h"
+#include "src/sm64ap.h"
 
 #define TEX_CACHE_STEP 512
 
@@ -49,7 +50,7 @@ struct ShaderProgram {
     bool used_textures[2];
     uint8_t num_floats;
     GLint attrib_locations[7];
-    GLint uniform_locations[5];
+    GLint uniform_locations[6];
     uint8_t attrib_sizes[7];
     uint8_t num_attribs;
     bool used_noise;
@@ -93,6 +94,7 @@ static void gfx_opengl_vertex_array_set_attribs(struct ShaderProgram *prg) {
 static inline void gfx_opengl_set_shader_uniforms(struct ShaderProgram *prg) {
     if (prg->used_noise)
         glUniform1f(prg->uniform_locations[4], (float)frame_count);
+    glUniform1f(prg->uniform_locations[5], gColorSaturation);
 }
 
 static inline void gfx_opengl_set_texture_uniforms(struct ShaderProgram *prg, const int tile) {
@@ -306,6 +308,7 @@ static struct ShaderProgram *gfx_opengl_create_and_load_new_shader(uint32_t shad
         append_line(fs_buf, &fs_len, "uniform vec2 uTex1Size;");
         append_line(fs_buf, &fs_len, "uniform bool uTex1Filter;");
     }
+    append_line(fs_buf, &fs_len, "uniform float uSaturation;");
 
     // 3 point texture filtering
     // Original author: ArthurCarvalho
@@ -385,6 +388,10 @@ static struct ShaderProgram *gfx_opengl_create_and_load_new_shader(uint32_t shad
     } else {
         append_line(fs_buf, &fs_len, "gl_FragColor = vec4(texel, 1.0);");
     }
+    append_line(fs_buf, &fs_len, "if (uSaturation < 1.0) {");
+    append_line(fs_buf, &fs_len, "    float gray = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));");
+    append_line(fs_buf, &fs_len, "    gl_FragColor.rgb = mix(vec3(gray), gl_FragColor.rgb, uSaturation);");
+    append_line(fs_buf, &fs_len, "}");
     append_line(fs_buf, &fs_len, "}");
 
     vs_buf[vs_len] = '\0';
@@ -489,6 +496,7 @@ static struct ShaderProgram *gfx_opengl_create_and_load_new_shader(uint32_t shad
     } else {
         prg->used_noise = false;
     }
+    prg->uniform_locations[5] = glGetUniformLocation(shader_program, "uSaturation");
 
     return prg;
 }

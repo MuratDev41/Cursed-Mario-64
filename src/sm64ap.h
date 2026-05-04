@@ -133,6 +133,17 @@ AP_EXTERN_C void SM64AP_ApplySignPalette(void);
 #define SM64AP_ID_RR_TRAP (SM64AP_ID_OFFSET + 1767)
 #define SM64AP_ID_DEATH_TRAP (SM64AP_ID_OFFSET + 1783)
 
+// Colors
+#define SM64AP_ID_COLOR_BLUE   (SM64AP_ID_OFFSET + 1800)
+#define SM64AP_ID_COLOR_YELLOW (SM64AP_ID_OFFSET + 1801)
+#define SM64AP_ID_COLOR_GREEN  (SM64AP_ID_OFFSET + 1802)
+#define SM64AP_ID_COLOR_RED    (SM64AP_ID_OFFSET + 1803)
+#define SM64AP_ID_COLOR_PURPLE (SM64AP_ID_OFFSET + 1804)
+#define SM64AP_ID_COLOR_BLACK  (SM64AP_ID_OFFSET + 1805)
+#define SM64AP_ID_COLOR_WHITE  (SM64AP_ID_OFFSET + 1806)
+#define SM64AP_ID_COLOR_PINK   (SM64AP_ID_OFFSET + 1807)
+#define SM64AP_ID_COLOR_ORANGE (SM64AP_ID_OFFSET + 1808)
+
 // Toads
 #define SM64AP_TOAD_CHECK_OFFSET 2000
 
@@ -209,6 +220,8 @@ AP_EXTERN_C void SM64AP_SendItem(int);
 AP_EXTERN_C void SM64AP_CheckEnemyDeath(struct Object *);
 AP_EXTERN_C void SM64AP_CheckCCMSpindrift(struct Object *o);
 AP_EXTERN_C void SM64AP_UpdateRRTrapTimer(struct MarioState *);
+AP_EXTERN_C float gColorSaturation;
+AP_EXTERN_C void SM64AP_CheckGrayscale(void);
 AP_EXTERN_C bool gFreezeTrapped;
 AP_EXTERN_C s32 gFreezeTrapTimer;
 AP_EXTERN_C Vec3f gFreezePos;

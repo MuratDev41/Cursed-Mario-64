@@ -78,6 +78,16 @@ s32 gRRTrapTimer = 0;
 static bool sm64_received_move_rando_high = false;
 char gPlantDebugText[64];
 s32 gPlantDebugTimer = 0;
+bool sm64_have_color_blue = false;
+bool sm64_have_color_yellow = false;
+bool sm64_have_color_green = false;
+bool sm64_have_color_red = false;
+bool sm64_have_color_purple = false;
+bool sm64_have_color_black = false;
+bool sm64_have_color_white = false;
+bool sm64_have_color_pink = false;
+bool sm64_have_color_orange = false;
+float gColorSaturation = 0.0f;
 
 std::map<int, int> map_entrances;
 std::set<int> course_dest_supported;
@@ -594,7 +604,35 @@ void SM64AP_Scuttlesanity(struct Object *o) {
             case SM64AP_ID_BBBITS_UNLOCK:
                 sm64_have_bits_bombs = true;
                 break;
+            case SM64AP_ID_COLOR_BLUE:
+                sm64_have_color_blue = true;
+                break;
+            case SM64AP_ID_COLOR_YELLOW:
+                sm64_have_color_yellow = true;
+                break;
+            case SM64AP_ID_COLOR_GREEN:
+                sm64_have_color_green = true;
+                break;
+            case SM64AP_ID_COLOR_RED:
+                sm64_have_color_red = true;
+                break;
+            case SM64AP_ID_COLOR_PURPLE:
+                sm64_have_color_purple = true;
+                break;
+            case SM64AP_ID_COLOR_BLACK:
+                sm64_have_color_black = true;
+                break;
+            case SM64AP_ID_COLOR_WHITE:
+                sm64_have_color_white = true;
+                break;
+            case SM64AP_ID_COLOR_PINK:
+                sm64_have_color_pink = true;
+                break;
+            case SM64AP_ID_COLOR_ORANGE:
+                sm64_have_color_orange = true;
+                break;
         }
+        SM64AP_CheckGrayscale();
     }
 }
 void SM64AP_CheckLocation(int64_t loc_id) {
@@ -1372,4 +1410,17 @@ void SM64AP_PrintNext() {
         AP_ClearLatestMessage();
         cur_msg_frame_duration = msg_frame_duration;
     }
+}
+void SM64AP_CheckGrayscale(void) {
+    int count = 0;
+    if (sm64_have_color_blue) count++;
+    if (sm64_have_color_yellow) count++;
+    if (sm64_have_color_green) count++;
+    if (sm64_have_color_red) count++;
+    if (sm64_have_color_purple) count++;
+    if (sm64_have_color_black) count++;
+    if (sm64_have_color_white) count++;
+    if (sm64_have_color_pink) count++;
+    if (sm64_have_color_orange) count++;
+    gColorSaturation = (float)count / 9.0f;
 }
