@@ -87,6 +87,7 @@ bool sm64_have_color_black = false;
 bool sm64_have_color_white = false;
 bool sm64_have_color_pink = false;
 bool sm64_have_color_orange = false;
+bool sm64_colors_as_items = false;
 float gColorSaturation = 0.0f;
 
 std::map<int, int> map_entrances;
@@ -853,6 +854,10 @@ void SM64AP_SetMoveRandoVecHigh(int vec) {
         (int)sm64_have_abilities[12],
         (int)sm64_have_abilities[13]);
 }
+void SM64AP_SetColorsAsItems(int enabled) {
+    sm64_colors_as_items = (enabled != 0);
+    SM64AP_CheckGrayscale();
+}
 void SM64AP_SetPaintingRando(int enabled) {
     if (!enabled) {
         // Not enabled, so unlock all paintings
@@ -927,6 +932,7 @@ void SM64AP_GenericInit() {
     AP_RegisterSlotDataIntCallback("MoveRandoVecHigh", &SM64AP_SetMoveRandoVecHigh);
     AP_RegisterSlotDataIntCallback("PaintingRando", &SM64AP_SetPaintingRando);
     AP_RegisterSlotDataMapIntIntCallback("AreaRando", &SM64AP_SetCourseMap);
+    AP_RegisterSlotDataIntCallback("colors_as_items", &SM64AP_SetColorsAsItems);
     AP_RegisterSlotDataIntCallback("MarioPaletteSeed", &SM64AP_SetMarioPaletteSeed);
 
     course_dest_supported = { LEVEL_BOB,     LEVEL_WF,    LEVEL_JRB,   LEVEL_CCM,      LEVEL_BBH,
@@ -1412,6 +1418,10 @@ void SM64AP_PrintNext() {
     }
 }
 void SM64AP_CheckGrayscale(void) {
+    if (!sm64_colors_as_items) {
+        gColorSaturation = 1.0f;
+        return;
+    }
     int count = 0;
     if (sm64_have_color_blue) count++;
     if (sm64_have_color_yellow) count++;

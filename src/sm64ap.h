@@ -221,6 +221,8 @@ AP_EXTERN_C void SM64AP_CheckEnemyDeath(struct Object *);
 AP_EXTERN_C void SM64AP_CheckCCMSpindrift(struct Object *o);
 AP_EXTERN_C void SM64AP_UpdateRRTrapTimer(struct MarioState *);
 AP_EXTERN_C float gColorSaturation;
+AP_EXTERN_C bool sm64_colors_as_items;
+AP_EXTERN_C void SM64AP_SetColorsAsItems(int enabled);
 AP_EXTERN_C void SM64AP_CheckGrayscale(void);
 AP_EXTERN_C bool gFreezeTrapped;
 AP_EXTERN_C s32 gFreezeTrapTimer;
