@@ -90,6 +90,18 @@ bool sm64_have_color_orange = false;
 bool sm64_colors_as_items = false;
 float gColorSaturation = 0.0f;
 
+#include <stdarg.h>
+static void AP_Log(const char* fmt, ...) {
+    FILE* f = fopen("ap_debug.log", "a");
+    if (!f) return;
+    va_list args;
+    va_start(args, fmt);
+    vfprintf(f, fmt, args);
+    va_end(args);
+    fclose(f);
+}
+
+
 std::map<int, int> map_entrances;
 std::set<int> course_dest_supported;
 
@@ -855,6 +867,7 @@ void SM64AP_SetMoveRandoVecHigh(int vec) {
         (int)sm64_have_abilities[13]);
 }
 void SM64AP_SetColorsAsItems(int enabled) {
+    AP_Log("[AP DEBUG] SetColorsAsItems called with: %d\n", enabled);
     sm64_colors_as_items = (enabled != 0);
     SM64AP_CheckGrayscale();
 }
@@ -1420,6 +1433,7 @@ void SM64AP_PrintNext() {
 void SM64AP_CheckGrayscale(void) {
     if (!sm64_colors_as_items) {
         gColorSaturation = 1.0f;
+        // printf("[AP DEBUG] CheckGrayscale: colors_as_items disabled, saturation=1.0\n");
         return;
     }
     int count = 0;
@@ -1433,4 +1447,5 @@ void SM64AP_CheckGrayscale(void) {
     if (sm64_have_color_pink) count++;
     if (sm64_have_color_orange) count++;
     gColorSaturation = (float)count / 9.0f;
+    AP_Log("[AP DEBUG] CheckGrayscale: count=%d, saturation=%f\n", count, gColorSaturation);
 }
